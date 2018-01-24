@@ -1,0 +1,22 @@
+<LimitExcept GET POST HEAD PUT>
+Order deny,allow
+Allow from all
+</LimitExcept>
+
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)\?*$ index.php/$1 [L,QSA]
+
+<ifModule mod_headers.c>
+<FilesMatch "\.(jpeg|jpg|png|gif)$">
+ Header set Cache-Control "max-age=29030400"
+</FilesMatch>
+</ifModule>
+
+# php.ini settings
+php_value max_execution_time 0
+php_value upload_max_filesize 2000M
+php_value post_max_size  2200M
+php_value memory_limit  -1

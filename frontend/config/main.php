@@ -7,43 +7,30 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-frontend',
+    'id' => 'smite-api',
+    'name'=>'Smite',
+    'version'=>'1.0.0',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'modules' =>require(__DIR__.'/general/module.php'),
     'components' => [
-        'request' => [
-            'csrfParam' => '_csrf-frontend',
-        ],
         'user' => [
             'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'enableSession' => false,
+            'loginUrl' => null
         ],
-        'session' => [
-            // this is the name of the session cookie used for login on the frontend
-            'name' => 'advanced-frontend',
-        ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                ],
-            ],
-        ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
+        'urlManager' =>require(__DIR__.'/general/router.php'),
+        'response' =>require(__DIR__.'/general/response.php'),
+        'request' =>require(__DIR__.'/general/request.php'),
+        'log' =>require(__DIR__.'/general/log.php'),
+//        'cache'=>[
+//            'class'=>'yii\caching\DbCache',
+//            'cacheTable'=>'cache'
+//        ],
+//        'errorHandler' => [
+//            'errorAction' => 'site/error'
+//        ],
     ],
-    'params' => $params,
+    'params' => $params
 ];
