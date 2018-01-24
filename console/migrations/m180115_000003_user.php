@@ -20,7 +20,7 @@ class m180115_000003_user extends Migration
             'gender' => $this->integer(2)->notNull()->unsigned(),
             'dob' => $this->date(),
             'bio' => $this->string(100),
-            'phone' => $this->string(20),
+            'phone' => $this->string(20)->notNull(),
             'token' => $this->string(100),
             'avatar' => $this->string(100),
             'created' => $this->integer(15),
