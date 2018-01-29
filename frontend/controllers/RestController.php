@@ -14,7 +14,7 @@ use yii\filters\ContentNegotiator;
 use yii\rest\ActiveController;
 use yii\web\Response;
 
-class RestControllers extends ActiveController
+class RestController extends ActiveController
 {
     /**
      * @return array

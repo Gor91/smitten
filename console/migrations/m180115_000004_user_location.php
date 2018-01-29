@@ -1,11 +1,15 @@
 <?php
+/**
+ * User location table
+ *
+ * @package    common
+ * @subpackage models
+ * @author     SIXELIT <sixelit.com>
+ */
 
 use yii\db\Migration;
 
-/**
- * Class m180115_000006_user_location
- */
-class m180115_000006_user_location extends Migration
+class m180115_000004_user_location extends Migration
 {
     public function up()
     {
@@ -24,13 +28,19 @@ class m180115_000006_user_location extends Migration
 
         $this->addForeignKey('userLocationUserFK', 'user_location', 'userId', 'user', 'id', "CASCADE", "CASCADE");
 
-        $this->createIndex()
+        $this->createIndex('userLocationLatINDEX', 'user_location', 'lat');
+        $this->createIndex('userLocationLngINDEX', 'user_location', 'lng');
+        $this->createIndex('userLocationCountryNameINDEX', 'user_location', 'countryName');
+        $this->createIndex('userLocationCountryCodeINDEX', 'user_location', 'countryCode');
+        $this->createIndex('userLocationCiteNameINDEX', 'user_location', 'cityName');
+        $this->createIndex('userLocationCityCode INDEX', 'user_location', 'cityCode');
+        $this->createIndex('userLocationCreatedINDEX', 'user_location', 'created');
+        $this->createIndex('userLocationUpdatedINDEX', 'user_location', 'updated');
     }
 
     public function down()
     {
         $this->dropForeignKey("userLocationUserFK", "user_location");
-        $this->dropForeignKey("userLocationCityFK", "user_location");
 
         $this->dropTable('user_location');
     }

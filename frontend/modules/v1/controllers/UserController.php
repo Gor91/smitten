@@ -36,7 +36,7 @@ class UserController extends RestController
                     HttpBearerAuth::className(),
                     QueryParamAuth::className()
                 ],
-                'except' => []
+                'except' => ['index','create']
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -68,6 +68,11 @@ class UserController extends RestController
 
         $actions['index'] = [
             'class' => 'frontend\modules\v1\controllers\userActions\IndexAction',
+            'modelClass' => $this->modelClass
+        ];
+
+        $actions['create'] = [
+            'class' => 'frontend\modules\v1\controllers\userActions\CreateAction',
             'modelClass' => $this->modelClass
         ];
 

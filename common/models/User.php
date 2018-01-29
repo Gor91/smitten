@@ -12,30 +12,31 @@ use common\components\Filter;
 /**
  * User model
  *
- * @property int $id
- * @property int $status_id
- * @property string $f_name
- * @property string $l_name
+ * @property int    $id
+ * @property int    $statusId
+ * @property string $fName
+ * @property string $lName
  * @property string $username
- * @property string $email
  * @property string $password
- * @property int $gender
+ * @property int    $gender
  * @property string $dob
  * @property string $bio
  * @property string $phone
  * @property string $token
  * @property string $avatar
- * @property int $created
- * @property int $updated
+ * @property int    $created
+ * @property int    $updated
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    /** @var $STATUS_BLOCKED */
-    const STATUS_BLOCKED = 1;
+    /** @var $STATUS_PENDING */
+    const STATUS_PENDING = 1;
+
     /** @var $STATUS_ACTIVE */
     const STATUS_ACTIVE = 2;
-    /** @var $STATUS_PENDING */
-    const STATUS_PENDING = 3;
+
+    /** @var $STATUS_BLOCKED */
+    const STATUS_BLOCKED = 3;
 
     /**
      * @return string
@@ -62,21 +63,17 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             /* Filters */
-            [['f_name', 'l_name', 'username', 'bio', 'email', 'password'], 'filter', 'filter' => function ($value) {
+            [['fName', 'lName', 'username', 'bio', 'password'], 'filter', 'filter' => function ($value) {
                 return Filter::cleanText($value);
-            }],
-            [['username', 'email', 'password'], 'filter', 'filter' => function ($value) {
-                return Filter::cleanAllInnerSpaces($value);
             }],
             ['username', 'filter', 'filter' => function ($value) {
                 return Filter::removeAtFromNickname($value);
             }],
             /* Validation rules */
-            ['status_id', 'default', 'value' => self::STATUS_PENDING],
-            ['status_id', 'in', 'range' => [self::STATUS_BLOCKED, self::STATUS_PENDING]],
+            ['statusId', 'default', 'value' => self::STATUS_PENDING],
+            ['statusId', 'in', 'range' => [self::STATUS_PENDING, self::STATUS_BLOCKED]],
             [['avatar', 'bio'], 'default', 'value' => null],
             ['password', 'string', 'min' => 6, 'max' => 20],
-            ['email', 'email'],
             [['dob'], 'date', 'format' => 'yyyy-mm-dd']
         ];
     }
@@ -88,11 +85,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'status_id' => Yii::t('app', 'Status Id'),
-            'f_name' => Yii::t('app', 'First Name'),
-            'l_name' => Yii::t('app', 'Last Name'),
+            'statusId' => Yii::t('app', 'Status Id'),
+            'fName' => Yii::t('app', 'First Name'),
+            'lName' => Yii::t('app', 'Last Name'),
             'username' => Yii::t('app', 'Username'),
-            'email' => Yii::t('app', 'Email'),
             'password' => Yii::t('app', 'Password'),
             'gender' => Yii::t('app', 'Gender'),
             'dob' => Yii::t('app', 'Day of bird'),
@@ -110,13 +106,16 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function fields()
     {
-        $fields = ['id', 'f_name', 'l_name', 'username', 'email', 'phone'];
+        $fields = ['id', 'fName', 'lName', 'username', 'phone'];
+
         if ($this->bio) {
             $fields[] = 'bio';
         }
+
         if ($this->dob) {
             $fields[] = 'dob';
         }
+
         return $fields;
     }
 
@@ -126,7 +125,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id' => $id, 'statusId' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -146,7 +145,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['username' => $username, 'statusId' => self::STATUS_ACTIVE]);
     }
 
     /**

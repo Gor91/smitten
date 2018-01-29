@@ -1,10 +1,14 @@
 <?php
+/**
+ * Gender table
+ *
+ * @package    common
+ * @subpackage models
+ * @author     SIXELIT <sixelit.com>
+ */
 
 use yii\db\Migration;
 
-/**
- * Class m180115_000002_gender
- */
 class m180115_000002_gender extends Migration
 {
     public function up()
