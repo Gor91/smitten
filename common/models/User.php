@@ -8,6 +8,8 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use common\components\Filter;
+use common\models\UserStatus;
+use common\models\DataAccess\UserQuery;
 
 /**
  * User model
@@ -29,14 +31,6 @@ use common\components\Filter;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    /** @var $STATUS_PENDING */
-    const STATUS_PENDING = 1;
-
-    /** @var $STATUS_ACTIVE */
-    const STATUS_ACTIVE = 2;
-
-    /** @var $STATUS_BLOCKED */
-    const STATUS_BLOCKED = 3;
 
     /**
      * @return string
@@ -70,8 +64,8 @@ class User extends ActiveRecord implements IdentityInterface
                 return Filter::removeAtFromNickname($value);
             }],
             /* Validation rules */
-            ['statusId', 'default', 'value' => self::STATUS_PENDING],
-            ['statusId', 'in', 'range' => [self::STATUS_PENDING, self::STATUS_BLOCKED]],
+            ['statusId', 'default', 'value' => UserStatus::PENDING],
+            ['statusId', 'in', 'range' => [ UserStatus::PENDING,  UserStatus::BLOCKED]],
             [['avatar', 'bio'], 'default', 'value' => null],
             ['password', 'string', 'min' => 6, 'max' => 20],
             [['dob'], 'date', 'format' => 'yyyy-mm-dd']
@@ -119,13 +113,21 @@ class User extends ActiveRecord implements IdentityInterface
         return $fields;
     }
 
+
+    /**
+     * @return UserQuery|\yii\db\ActiveQuery
+     */
+    public static function find()
+    {
+        return new UserQuery(get_called_class());
+    }
     /**
      * @param int|string $id
      * @return null|IdentityInterface|static
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'statusId' => self::STATUS_ACTIVE]);
+        return static::findOne(['id' => $id, 'statusId' => UserStatus::ACTIVE]);
     }
 
     /**
@@ -145,7 +147,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'statusId' => self::STATUS_ACTIVE]);
+        return static::findOne(['username' => $username, 'statusId' =>  UserStatus::ACTIVE]);
     }
 
     /**
@@ -188,7 +190,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function setPassword($password)
     {
-        $this->password = Yii::$app->security->generatePasswordHash($password);
+        $this->password = Yii::$app->security->generatePasswordHash(md5($password));
     }
 
     /**

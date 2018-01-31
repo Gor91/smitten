@@ -7,7 +7,7 @@
  * @author     SIXELIT <sixelit.com>
  */
 
-namespace frontend\models\v1\models;
+namespace frontend\modules\v1\models;
 
 class User extends \common\models\User
 {
