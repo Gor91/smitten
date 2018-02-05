@@ -22,19 +22,21 @@ class LoginAction extends Action
 {
     public function run()
     {
-        /* @var $model User */
+        /** @var $model User */
         $model = new $this->modelClass;
-        $model->phone = Yii::$app->request->getBodyParam('phone', null);
-        $model->username = Yii::$app->request->getBodyParam('username', null);
-        $model->password = Yii::$app->request->getBodyParam('password', null);
+        $model->phone = Yii::$app->request->getBodyParam('phone');
+        $model->username = Yii::$app->request->getBodyParam('username');
+        $model->password = Yii::$app->request->getBodyParam('password');
 
         if ($model->validate()) {
             $credential = $model->phone ?: $model->username;
+
+            /** @var $user User */
             $user = $model::find()->byUsernameOrPhone($credential);
 
             if (!is_null($user) && !$model->password) {
                 throw new ForbiddenHttpException();
-            } else if (is_null($user) || !Yii::$app->getSecurity()->validatePassword($model->password, $user->password)) {
+            } else if (is_null($user) || !Yii::$app->getSecurity()->validatePassword(md5($model->password), $user->password)) {
                 throw new NotFoundHttpException(Constants::SYS_ERR_INVALID_CREDENTIALS);
             }
 

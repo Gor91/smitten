@@ -4,7 +4,7 @@
  *
  * @package    frontend\modules\v1
  * @subpackage models
- * @author     SIXELIT <SixelIt.com>
+ * @author     SIXELIT <sixelIt.com>
  */
 
 namespace frontend\modules\v1\models;
@@ -15,12 +15,10 @@ namespace frontend\modules\v1\models;
  * @property integer $id
  * @property string $label
  *
- * @property User[] $users
+ * @property User $users
  */
 class UserStatus extends \common\models\UserStatus
 {
-
-
     /**
      * @param bool $insert
      * @return bool

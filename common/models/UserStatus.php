@@ -1,4 +1,11 @@
 <?php
+/**
+ * User Status
+ *
+ * @package    common
+ * @subpackage models
+ * @author     SIXELIT <sixelit.com>
+ */
 
 namespace common\models;
 
@@ -15,7 +22,6 @@ class UserStatus extends ActiveRecord
 
     /** @var $BLOCKED */
     const BLOCKED = 3;
-
 
     /**
      * @return string
@@ -48,23 +54,6 @@ class UserStatus extends ActiveRecord
     }
 
     /**
-     * @param bool $insert
-     * @return bool
-     */
-    public function beforeSave($insert)
-    {
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function beforeDelete()
-    {
-        return false;
-    }
-
-    /**
      * @return \yii\db\ActiveQuery
      */
     public function getUsers()
@@ -80,9 +69,7 @@ class UserStatus extends ActiveRecord
         return [
             self::PENDING => 'PENDING',
             self::ACTIVE => 'ACTIVE',
-            self::BLOCKED => 'BLOCKED',
-            self::DELETED => 'DELETED'
+            self::BLOCKED => 'BLOCKED'
         ];
     }
-
 }

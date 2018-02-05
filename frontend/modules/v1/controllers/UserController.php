@@ -36,12 +36,12 @@ class UserController extends RestController
                     HttpBearerAuth::className(),
                     QueryParamAuth::className()
                 ],
-                'except' => ['index','create','login']
+                'except' => ['create', 'login']
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'login'=>['POST']
+                    'login' => ['POST']
                 ],
             ],
         ], parent::behaviors());
@@ -66,11 +66,6 @@ class UserController extends RestController
     public function actions()
     {
         $actions = [];
-
-        $actions['index'] = [
-            'class' => 'frontend\modules\v1\controllers\userActions\IndexAction',
-            'modelClass' => $this->modelClass
-        ];
 
         $actions['create'] = [
             'class' => 'frontend\modules\v1\controllers\userActions\CreateAction',
