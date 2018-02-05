@@ -18,10 +18,10 @@ class m180115_000004_user_location extends Migration
             'userId' => $this->bigInteger()->unique()->unsigned()->notNull(),
             'lat' => $this->float()->notNull(),
             'lng' => $this->float()->notNull(),
-            'countryName' => $this->string(255),
-            'countryCode' => $this->string(255),
-            'cityName' => $this->string(255),
-            'cityCode' => $this->string(255),
+            'countryName' => $this->string(255)->notNull(),
+            'countryCode' => $this->string(255)->notNull(),
+            'cityName' => $this->string(255)->notNull(),
+            'cityCode' => $this->string(255)->notNull(),
             'created' => $this->bigInteger(20)->unsigned(),
             'updated' => $this->bigInteger(20)->unsigned()
         ]);

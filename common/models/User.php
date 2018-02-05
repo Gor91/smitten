@@ -1,36 +1,47 @@
 <?php
+/**
+ * User
+ *
+ * @package    common
+ * @subpackage models
+ * @author     SIXELIT <sixelit.com>
+ */
 
 namespace common\models;
 
+use DateTime;
 use Yii;
 use yii\base\NotSupportedException;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use common\components\Filter;
-use common\models\UserStatus;
 use common\models\DataAccess\UserQuery;
 
 /**
  * User model
  *
- * @property int    $id
- * @property int    $statusId
+ * @property int $id
+ * @property int $statusId
+ * @property string $lng
  * @property string $fName
  * @property string $lName
  * @property string $username
  * @property string $password
- * @property int    $gender
+ * @property int $gender
  * @property string $dob
  * @property string $bio
  * @property string $phone
  * @property string $token
  * @property string $avatar
- * @property int    $created
- * @property int    $updated
+ * @property int $created
+ * @property int $updated
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends BaseModel implements IdentityInterface
 {
+    /** @var $SCENARIO_CREATE */
+    const SCENARIO_CREATE = 'create';
+
+    /** @var $SCENARIO_LOGIN */
+    const SCENARIO_LOGIN = 'login';
 
     /**
      * @return string
@@ -38,16 +49,6 @@ class User extends ActiveRecord implements IdentityInterface
     public static function tableName()
     {
         return 'user';
-    }
-
-    /**
-     * @return array
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className(),
-        ];
     }
 
     /**
@@ -65,9 +66,8 @@ class User extends ActiveRecord implements IdentityInterface
             }],
             /* Validation rules */
             ['statusId', 'default', 'value' => UserStatus::PENDING],
-            ['statusId', 'in', 'range' => [ UserStatus::PENDING,  UserStatus::BLOCKED]],
+            ['statusId', 'in', 'range' => [UserStatus::PENDING, UserStatus::BLOCKED]],
             [['avatar', 'bio'], 'default', 'value' => null],
-            ['password', 'string', 'min' => 6, 'max' => 20],
             [['dob'], 'date', 'format' => 'yyyy-mm-dd']
         ];
     }
@@ -80,6 +80,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'id' => Yii::t('app', 'ID'),
             'statusId' => Yii::t('app', 'Status Id'),
+            'lng' => Yii::t('app', 'Language Id'),
             'fName' => Yii::t('app', 'First Name'),
             'lName' => Yii::t('app', 'Last Name'),
             'username' => Yii::t('app', 'Username'),
@@ -100,7 +101,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function fields()
     {
-        $fields = ['id', 'fName', 'lName', 'username', 'phone'];
+        $fields = ['id', 'fName', 'lName', 'username', 'gender', 'phone'];
 
         if ($this->bio) {
             $fields[] = 'bio';
@@ -113,7 +114,6 @@ class User extends ActiveRecord implements IdentityInterface
         return $fields;
     }
 
-
     /**
      * @return UserQuery|\yii\db\ActiveQuery
      */
@@ -121,6 +121,33 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return new UserQuery(get_called_class());
     }
+
+    /**
+     * @return bool
+     */
+    public function isBirthDay()
+    {
+        return date('m-d') == date('m-d', strtotime($this->dob));
+    }
+
+    /**
+     * @param $dob
+     * @return int
+     */
+    public static function calculateAge($dob)
+    {
+        try {
+            $birthDate = new DateTime($dob);
+            $today = new DateTime('today');
+
+            return $birthDate->diff($today)->y;
+        } catch (\Exception $e) {
+            Yii::error($e, 'app');
+        }
+
+        return 0;
+    }
+
     /**
      * @param int|string $id
      * @return null|IdentityInterface|static
@@ -147,7 +174,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'statusId' =>  UserStatus::ACTIVE]);
+        return static::findOne(['username' => $username, 'statusId' => UserStatus::ACTIVE]);
     }
 
     /**

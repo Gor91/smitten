@@ -9,9 +9,9 @@
 
 namespace common\models;
 
-use common\components\ArrayHelper;
 use yii;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "language".
