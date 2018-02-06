@@ -157,15 +157,16 @@ class User extends BaseModel implements IdentityInterface
         return static::findOne(['id' => $id, 'statusId' => UserStatus::ACTIVE]);
     }
 
+
     /**
      * @param mixed $token
      * @param null $type
-     * @return void|IdentityInterface
-     * @throws NotSupportedException
+     * @return null|IdentityInterface|static
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::findOne(['token' => $token]);
+
     }
 
     /**
