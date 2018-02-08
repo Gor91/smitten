@@ -11,7 +11,6 @@ namespace common\models;
 
 use DateTime;
 use Yii;
-use yii\base\NotSupportedException;
 use yii\web\IdentityInterface;
 use common\components\Filter;
 use common\models\DataAccess\UserQuery;
