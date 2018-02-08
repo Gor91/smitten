@@ -9,6 +9,7 @@
 
 namespace frontend\modules\v1\models;
 
+use common\components\Constants;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -34,8 +35,8 @@ class UserLocation extends \common\models\UserLocation
     {
         return ArrayHelper::merge(parent::rules(), [
             /** registration rules*/
-            [['userId', 'countryName', 'countryCode', 'cityName', 'cityCode', 'lat', 'lng'], 'required', 'message' => 'err.required', 'on' => User::SCENARIO_CREATE],
-            [['lat', 'lng'], 'number', 'message' => 'err.not_number', 'on' => User::SCENARIO_CREATE],
+            [['userId', 'countryName', 'countryCode', 'cityName', 'cityCode', 'lat', 'lng'], 'required', 'message' => Constants::ERR_REQUIRED, 'on' => User::SCENARIO_CREATE],
+            [['lat', 'lng'], 'number', 'message' => Constants::ERR_WRONG_VALUE, 'on' => User::SCENARIO_CREATE],
             [['countryName', 'countryCode', 'cityName', 'cityCode'], 'string', 'max' => 255, 'on' => User::SCENARIO_CREATE]
         ]);
     }

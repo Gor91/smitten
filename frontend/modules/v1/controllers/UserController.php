@@ -41,6 +41,7 @@ class UserController extends RestController
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
+                    'activate' => ['POST'],
                     'login' => ['POST']
                 ],
             ],
@@ -69,6 +70,11 @@ class UserController extends RestController
 
         $actions['create'] = [
             'class' => 'frontend\modules\v1\controllers\userActions\CreateAction',
+            'modelClass' => $this->modelClass
+        ];
+
+        $actions['activate'] = [
+            'class' => 'frontend\modules\v1\controllers\userActions\ActivateAction',
             'modelClass' => $this->modelClass
         ];
 

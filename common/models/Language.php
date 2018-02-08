@@ -62,7 +62,7 @@ class Language extends ActiveRecord
      */
     public function getUsers()
     {
-        return $this->hasMany(User::className(), ['lng' => 'key']);
+        return $this->hasMany(User::className(), ['lang' => 'key']);
     }
 
     /**

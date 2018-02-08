@@ -9,6 +9,7 @@
 
 namespace common\models;
 
+use common\components\Filter;
 use Yii;
 
 /**
@@ -38,9 +39,10 @@ class SmsCode extends BaseModel
     public function rules()
     {
         return [
-            [['userId', 'code'], 'required'],
-            [['userId', 'code'], 'integer'],
-            [['userId'], 'unique'],
+            /*Filter sms code*/
+            [['code'], 'filter', 'filter' => function ($value) {
+                return Filter::cleanText($value);
+            }],
             [['userId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['userId' => 'id']],
         ];
     }
@@ -65,5 +67,14 @@ class SmsCode extends BaseModel
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'userId']);
+    }
+
+    /**
+     * @param $code
+     * @return bool
+     */
+    public static function existsCode($code)
+    {
+        return static::find()->where(['AND', ['userId' => Yii::$app->user->identity->getId(), 'code' => $code]])->exists();
     }
 }

@@ -20,6 +20,83 @@ use yii\web\ServerErrorHttpException;
 
 class LoginAction extends Action
 {
+    /**
+     * @api {POST} /users/login App login
+     * @apiHeaderExample {json} Headers
+     *     {
+     *       "Content-type": "application/json",
+     *       "Os": "ios"
+     *     }
+     * @apiVersion 1.0.0
+     * @apiName LoginUser
+     * @apiGroup User
+     * @apiPermission none
+     *
+     * @apiParam {String} phone/username Mandatory field.
+     * @apiParam {String} password Mandatory password.
+     *
+     * @apiParamExample {json} Request
+     *    {
+     *      "username":"+37498123456",
+     *      "password":"password",
+     *    }
+     *
+     * @apiErrorExample Response error ▼
+     *    HTTP/1.1 404 Not Found
+     *    {
+     *      "code":404,
+     *      "name":"Not Found",
+     *      "message":"system.err.loginOrPass"
+     *    }
+     *
+     * @apiErrorExample  Response error ▼
+     *    HTTP/1.1 422 Uncrossable Entity
+     *    {
+     *      "code":422,
+     *      "name":"Data Validation Failed.",
+     *      "errors":[
+     *        {
+     *          "field":"username",
+     *          "message":"err.phone_or_username.required"
+     *        },
+     *        {
+     *          "field":"password",
+     *          "message":"err.required"
+     *        }
+     *      ]
+     *    }
+     *
+     * @apiErrorExample  Response error ▼
+     *    HTTP/1.1 403 Forbidden
+     *      {
+     *          "code": 403,
+     *          "name": "Forbidden",
+     *          "message": "system.err.profile_not_active"
+     *      }
+     *
+     * @apiSuccessExample  Response success
+     *     HTTP/1.1 200 Ok
+     *      {
+     *          "code": 200,
+     *          "name": "OK",
+     *          "data": {
+     *              "token": "LbL5rvBEtiMx2ltoyxSgsCQcQKXfx3NU",
+     *              "user": {
+     *                  "id": "1",
+     *                  "fName": "Jone",
+     *                  "lName": "Smith",
+     *                  "username": "jone",
+     *                  "gender": 1,
+     *                  "phone": "+37444746579"
+     *              }
+     *          }
+     *      }
+     *
+     * @return array|User
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     * @throws ServerErrorHttpException
+     */
     public function run()
     {
         /** @var $model User */

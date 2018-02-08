@@ -17,10 +17,10 @@ class m180115_000003_user extends Migration
         $this->createTable('user', [
             'id' => $this->bigPrimaryKey()->notNull()->unsigned(),
             'statusId' => $this->integer(2)->notNull()->unsigned(),
-            'lng' => $this->string(20)->defaultValue(Language::getDefault(true)),
+            'lang' => $this->string(20)->defaultValue(Language::getDefault(true)),
             'fName' => $this->string(60)->notNull(),
             'lName' => $this->string(60)->notNull(),
-            'username' => $this->string(60)->notNull(),
+            'username' => $this->string(60)->unique()->notNull(),
             'password' => $this->string(100)->notNull(),
             'gender' => $this->integer(2)->notNull()->unsigned(),
             'dob' => $this->date(),
