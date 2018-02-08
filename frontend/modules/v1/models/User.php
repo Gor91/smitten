@@ -30,8 +30,8 @@ class User extends \common\models\User
             [['password'], 'string', 'min' => '6', 'max' => '60', 'message' => Constants::ERR_TYPE_NOT_ALLOWED, 'tooShort' => Constants::ERR_MIN_LENGTH, 'tooLong' => Constants::ERR_MAX_LENGTH, 'on' => self::SCENARIO_CREATE],
             [['phone'], 'string', 'on' => self::SCENARIO_CREATE],
             [['phone'], PhoneInputValidator::className(), 'message' => Constants::ERR_NOT_VALID, 'on' => self::SCENARIO_CREATE],
-            [['lng'], 'in', 'range' => Language::getSupported(true), 'message' => Constants::ERR_WRONG_VALUE, 'on' => self::SCENARIO_CREATE],
-            [['lng'], 'default', 'value' => Language::getDefault(true), 'on' => self::SCENARIO_CREATE],
+            [['lang'], 'in', 'range' => Language::getSupported(true), 'message' => Constants::ERR_WRONG_VALUE, 'on' => self::SCENARIO_CREATE],
+            [['lang'], 'default', 'value' => Language::getDefault(true), 'on' => self::SCENARIO_CREATE],
             [['dob'], 'validateUserBirthDate', 'on' => self::SCENARIO_CREATE],
             /*Login rules*/
             [['password'], 'required', 'message' => Constants::ERR_REQUIRED, 'on' => self::SCENARIO_LOGIN],
@@ -41,6 +41,10 @@ class User extends \common\models\User
         ]);
     }
 
+    /**
+     * @param $attribute
+     * @param $params
+     */
     public function validateUserBirthDate($attribute, $params)
     {
         $date = new \DateTime();

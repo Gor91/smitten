@@ -39,4 +39,6 @@ class Constants
     const ERR_AGE_SMALL = 'err.small';
 
     const ERR_AGE_BIG = 'err.big';
+
+    const ERR_OUT_OF_RANGE = 'err.out_of_range';
 }

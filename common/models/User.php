@@ -21,7 +21,7 @@ use common\models\DataAccess\UserQuery;
  *
  * @property int $id
  * @property int $statusId
- * @property string $lng
+ * @property string $lang
  * @property string $fName
  * @property string $lName
  * @property string $username
@@ -66,7 +66,7 @@ class User extends BaseModel implements IdentityInterface
             }],
             /* Validation rules */
             ['statusId', 'default', 'value' => UserStatus::PENDING],
-            ['statusId', 'in', 'range' => [UserStatus::PENDING, UserStatus::BLOCKED]],
+            ['statusId', 'in', 'range' => [UserStatus::PENDING, UserStatus::ACTIVE, UserStatus::BLOCKED]],
             [['avatar', 'bio'], 'default', 'value' => null],
             [['dob'], 'date', 'format' => 'yyyy-mm-dd']
         ];
@@ -80,7 +80,7 @@ class User extends BaseModel implements IdentityInterface
         return [
             'id' => Yii::t('app', 'ID'),
             'statusId' => Yii::t('app', 'Status Id'),
-            'lng' => Yii::t('app', 'Language Id'),
+            'lang' => Yii::t('app', 'Language Id'),
             'fName' => Yii::t('app', 'First Name'),
             'lName' => Yii::t('app', 'Last Name'),
             'username' => Yii::t('app', 'Username'),
@@ -101,7 +101,7 @@ class User extends BaseModel implements IdentityInterface
      */
     public function fields()
     {
-        $fields = ['id', 'fName', 'lName', 'username', 'gender', 'phone'];
+        $fields = ['id', 'fName', 'lName', 'username', 'gender','lang', 'phone'];
 
         if ($this->bio) {
             $fields[] = 'bio';
@@ -160,12 +160,11 @@ class User extends BaseModel implements IdentityInterface
     /**
      * @param mixed $token
      * @param null $type
-     * @return void|IdentityInterface
-     * @throws NotSupportedException
+     * @return null|IdentityInterface|static
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::findOne(['token' => $token]);
     }
 
     /**

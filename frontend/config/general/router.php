@@ -13,7 +13,8 @@ return [
             'class' => 'yii\rest\UrlRule',
             'controller' => ['v1/user'],
             'extraPatterns' => [
-                'login'=>'login'
+                'login' => 'login',
+                'activate' => 'activate'
             ]
         ],
     ],

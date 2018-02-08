@@ -6,8 +6,8 @@ $age_range = [
 ];
 
 $sms_range = [
-    'code.min' => 2000,
-    'code.max' => 9000
+    'code.min' => 1000,
+    'code.max' => 9999
 ];
 
 return array_merge(

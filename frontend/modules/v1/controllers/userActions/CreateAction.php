@@ -1,5 +1,4 @@
 <?php
-
 /**
  * User registration
  *
@@ -22,10 +21,178 @@ use yii\web\ServerErrorHttpException;
 class CreateAction extends Action
 {
     /**
+     * @api {POST} /users Create/Registration
+     * @apiHeaderExample {json} Headers
+     *     {
+     *       "Content-type": "application/json",
+     *       "Os": "ios"
+     *     }
+     * @apiVersion 1.0.0
+     * @apiName PostUser
+     * @apiGroup User
+     * @apiPermission none
+     *
+     * @apiParam {String{2..60}} fName Mandatory fName
+     * @apiParam {String{2..60}} lName Mandatory lName
+     * @apiParam {String{2..60}} username Mandatory username
+     * @apiParam {String{6..60}} password Mandatory password
+     * @apiParam {String{5..60}} phone Mandatory phone
+     * @apiParam {Int=1,2} gender Mandatory gender (1.male, 2.female)
+     * @apiParam {Date} dob Mandatory dob (format yyyy-mm-dd)
+     * @apiParam {String="en","am","ch","de","fr","jp","ru",} [lang] with default value "en".
+     *
+     * @apiParam {String{..255}} countryName Mandatory countryName
+     * @apiParam {String{..255}} countryCode Mandatory countryCode
+     * @apiParam {String{..255}} cityName Mandatory cityName
+     * @apiParam {String{..255}} cityCode Mandatory cityCode
+     * @apiParam {String{..255}} lat Mandatory lat
+     * @apiParam {String{..255}} lng Mandatory lng
+     *
+     * @apiParamExample {json} Request
+     *     {
+     *          "fName":"Jone",
+     *          "lName":"Smith",
+     *          "username":"jone",
+     *          "password":"123456",
+     *          "gender":"1",
+     *          "dob":"1989-02-02",
+     *          "phone":"+37493123456",
+     *          "lang": "am",
+     *          "location":{
+     *              "countryName":"Armenia",
+     *              "countryCode":"AM",
+     *              "cityName":"Erevan",
+     *              "cityCode":"erevan",
+     *              "lat":"45.56",
+     *              "lng":"42.15"
+     *           }
+     *      }
+     *
+     * @apiErrorExample Response error ▼
+     *    HTTP/1.1 422 Uncrossable Entity
+     *      {
+     *          "code": 422,
+     *          "name": "Data Validation Failed.",
+     *          "errors": [
+     *              {
+     *                  "field": "fName",
+     *                  "message": "err.required"
+     *              },
+     *              {
+     *                  "field": "lName",
+     *                  "message": "err.required"
+     *              },
+     *              {
+     *                  "field": "username",
+     *                  "message": "err.required"
+     *              },
+     *              {
+     *                  "field": "password",
+     *                  "message": "err.required"
+     *              },
+     *              {
+     *                  "field": "phone",
+     *                  "message": "err.required"
+     *              },
+     *              {
+     *                  "field": "gender",
+     *                  "message": "err.required"
+     *              },
+     *              {
+     *                  "field": "countryName",
+     *                  "message": "err.required"
+     *              },
+     *              {
+     *                  "field": "countryCode",
+     *                  "message": "err.required"
+     *              },
+     *              {
+     *                  "field": "cityName",
+     *                  "message": "err.required"
+     *              },
+     *              {
+     *                  "field": "cityCode",
+     *                  "message": "err.required"
+     *              },
+     *              {
+     *                  "field": "lat",
+     *                  "message": "err.required"
+     *              },
+     *              {
+     *                  "field": "lng",
+     *                  "message": "err.required"
+     *              }
+     *          ]
+     *      }
+     *
+     * @apiErrorExample Response error ▼
+     *    HTTP/1.1 422 Uncrossable Entity
+     *    {
+     *      "code":422,
+     *      "name":"Data Validation Failed.",
+     *      "errors": [
+     *          {
+     *              "field": "username",
+     *              "message": "err.max_length"
+     *          },
+     *          {
+     *              "field": "password",
+     *              "message": "err.min_length"
+     *          }
+     *      ]
+     *    }
+     *
+     * @apiErrorExample Response error ▼
+     *    HTTP/1.1 422 Uncrossable Entity
+     *    {
+     *      "code":422,
+     *      "name":"Data Validation Failed.",
+     *      "errors":[
+     *          {
+     *              "field": "username",
+     *              "message": "err.exist"
+     *          },
+     *          {
+     *              "field": "phone",
+     *              "message": "err.exist"
+     *          },
+     *          {
+     *              "field": "dob",
+     *              "message": "err.big"
+     *          }
+     *      ]
+     *    }
+     *
+     * @apiErrorExample Response error ▼
+     *    HTTP/1.1 422 Uncrossable Entity
+     *    {
+     *      "code":422,
+     *      "name":"Data Validation Failed.",
+     *      "errors":[
+     *          {
+     *              "field": "phone",
+     *              "message": "err.not_valid"
+     *          },
+     *          {
+     *              "field": "dob",
+     *              "message": "err.small"
+     *          }
+     *      ]
+     *    }
+     *
+     * @apiSuccessExample  Response success
+     *    {
+     *        "code": 202,
+     *        "name": "Accepted",
+     *        "data": {
+     *            "token": "ERzWSTEJzq0EuK4uIJyDkHvFuTQDa0ck",
+     *            "code": 1144
+     *        }
+     *    }
+     *
      * @return array|User
      * @throws ServerErrorHttpException
-     * @throws \yii\base\Exception
-     * @throws \yii\db\Exception
+     * @throws yii\base\Exception
      */
     public function run()
     {
@@ -43,7 +210,7 @@ class CreateAction extends Action
         $model->gender = Yii::$app->request->getBodyParam('gender');
         $model->phone = Yii::$app->request->getBodyParam('phone');
         $model->dob = Yii::$app->request->getBodyParam('dob');
-        $model->lng = Yii::$app->request->getBodyParam('lng');
+        $model->lang = Yii::$app->request->getBodyParam('lang');
         $location = Yii::$app->request->getBodyParam('location');
 
         $userLocation->countryName = ArrayHelper::getValue($location, 'countryName');
@@ -78,7 +245,7 @@ class CreateAction extends Action
                                 $transaction->commit();
 
                                 Yii::info('New registration', 'app');
-                                Yii::$app->getResponse()->setStatusCode(201);
+                                Yii::$app->getResponse()->setStatusCode(202);
 
                                 return [
                                     'token' => $model->token,
