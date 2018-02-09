@@ -60,4 +60,12 @@ class User extends \common\models\User
             $this->addError($attribute, Constants::ERR_AGE_BIG);
         }
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLocation()
+    {
+        return $this->hasMany(UserLocation::className(), ['userId' => 'id']);
+    }
 }

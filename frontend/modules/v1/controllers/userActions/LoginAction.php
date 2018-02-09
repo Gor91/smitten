@@ -37,8 +37,8 @@ class LoginAction extends Action
      *
      * @apiParamExample {json} Request
      *    {
-     *      "username":"+37498123456",
-     *      "password":"password",
+     *      "username":"+37477646579",
+     *      "password":"123456",
      *    }
      *
      * @apiErrorExample Response error ▼
@@ -87,7 +87,17 @@ class LoginAction extends Action
      *                  "lName": "Smith",
      *                  "username": "jone",
      *                  "gender": 1,
-     *                  "phone": "+37444746579"
+     *                  "phone": "+37477646579",
+     *                  "age": 29,
+     *                  "avatar": "http://smite.sixelitprojects.com/avatars/1989/jone.png",
+     *                  "location": [
+     *                      {
+     *                          "countryName": "Armenia",
+     *                          "countryCode": "AM",
+     *                          "cityName": "Erevan",
+     *                          "cityCode": "erevan"
+     *                      }
+     *                  ]
      *              }
      *          }
      *      }

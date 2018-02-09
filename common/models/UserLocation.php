@@ -58,6 +58,19 @@ class UserLocation extends BaseModel
     /**
      * @return array
      */
+    public function fields()
+    {
+        return [
+            "countryName",
+            "countryCode",
+            "cityName",
+            "cityCode"
+        ];
+    }
+
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [
