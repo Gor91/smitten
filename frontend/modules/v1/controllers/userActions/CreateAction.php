@@ -56,7 +56,7 @@ class CreateAction extends Action
      *          "password":"123456",
      *          "gender":"1",
      *          "dob":"1989-02-02",
-     *          "phone":"+37493123456",
+     *          "phone":"+37477646579",
      *          "lang": "am",
      *          "location":{
      *              "countryName":"Armenia",

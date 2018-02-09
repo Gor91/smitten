@@ -42,6 +42,9 @@ class User extends BaseModel implements IdentityInterface
     /** @var $SCENARIO_LOGIN */
     const SCENARIO_LOGIN = 'login';
 
+    /** @var $PATH_AVATARS */
+    const PATH_AVATARS = 'avatars';
+
     /**
      * @return string
      */
@@ -100,15 +103,25 @@ class User extends BaseModel implements IdentityInterface
      */
     public function fields()
     {
-        $fields = ['id', 'fName', 'lName', 'username', 'gender','lang', 'phone'];
+        $fields = ['id', 'fName', 'lName', 'username', 'gender', 'lang', 'phone'];
 
         if ($this->bio) {
             $fields[] = 'bio';
         }
 
         if ($this->dob) {
-            $fields[] = 'dob';
+            $fields['age'] = function () {
+                return self::calculateAge($this->dob);
+            };
         }
+
+        if ($this->avatar) {
+            $fields['avatar'] = function () {
+                return Yii::getAlias(sprintf('%s/%s/%s/%s', Yii::$app->params['url.storage'], self::PATH_AVATARS, date('Y', strtotime($this->dob)), $this->avatar));
+            };
+        }
+
+        $fields[] = 'location';
 
         return $fields;
     }
