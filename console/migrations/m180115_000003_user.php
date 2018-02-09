@@ -33,7 +33,7 @@ class m180115_000003_user extends Migration
         ]);
 
         $this->addForeignKey('userStatusFK', 'user', 'statusId', 'user_status', 'id', "CASCADE", "CASCADE");
-        $this->addForeignKey('userLngFK', 'user', 'lng', 'language', 'key', "CASCADE", "CASCADE");
+        $this->addForeignKey('userLngFK', 'user', 'lang', 'language', 'key', "CASCADE", "CASCADE");
         $this->addForeignKey('userGenderFK', 'user', 'gender', 'gender', 'id', "CASCADE", "CASCADE");
     }
 
