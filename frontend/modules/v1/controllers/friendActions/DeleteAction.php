@@ -18,7 +18,7 @@ use yii\web\ServerErrorHttpException;
 class DeleteAction extends Action
 {
     /**
-     * @api {DELETE} /friends/{id} Delete friend request
+     * @api {DELETE} /friends/{id} Delete request
      * @apiVersion 1.0.0
      * @apiName DeleteFriend
      * @apiGroup Friend

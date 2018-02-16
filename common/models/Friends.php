@@ -77,7 +77,7 @@ class Friends extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFromRequestFriend()
+    public function getFromRequestUser()
     {
         return $this->hasOne(User::className(), ['id' => 'from']);
     }
@@ -85,7 +85,7 @@ class Friends extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getToRequestFriend()
+    public function getToRequestUser()
     {
         return $this->hasOne(User::className(), ['id' => 'to']);
     }

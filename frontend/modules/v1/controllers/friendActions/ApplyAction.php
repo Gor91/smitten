@@ -20,7 +20,7 @@ class ApplyAction extends Action
 {
 
     /**
-     * @api {PUT} /friends/{id} Apply friend request
+     * @api {PUT} /friends/{id} Apply request
      * @apiVersion 1.0.0
      * @apiName ApplyFriend
      * @apiGroup Friend
@@ -41,7 +41,7 @@ class ApplyAction extends Action
      *  }
      *
      * @param $id
-     * @return null|static
+     * @return Friends
      * @throws NotFoundHttpException
      * @throws ServerErrorHttpException
      */
@@ -51,13 +51,12 @@ class ApplyAction extends Action
         $model = Friends::findOne(['from' => $id, 'to' => $identityId]);
 
         if (Friends::find()->friendExists($identityId, $id) && ($model->statusId != FriendStatus::FRIEND)) {
-
             $model->statusId = FriendStatus::FRIEND;
 
             try {
                 if ($model->save()) {
                     Yii::$app->getResponse()->setStatusCode(202);
-                    return;
+                    return null;
                 }
             } catch (\Exception $e) {
                 Yii::error($e->getMessage(), 'app');
@@ -69,6 +68,7 @@ class ApplyAction extends Action
 
             return $model;
         }
+
         throw new NotFoundHttpException();
     }
 }

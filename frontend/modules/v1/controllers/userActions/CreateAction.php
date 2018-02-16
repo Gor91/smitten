@@ -39,7 +39,7 @@ class CreateAction extends Action
      * @apiParam {String{5..60}} phone Mandatory phone
      * @apiParam {Int=1,2} gender Mandatory gender (1.male, 2.female)
      * @apiParam {Date} dob Mandatory dob (format yyyy-mm-dd)
-     * @apiParam {String="en","am","ch","de","fr","jp","ru",} [lang] with default value "en".
+     * @apiParam {String="en","ru","fr","de","ja","zh-Hant"} [lang] with default value "en".
      *
      * @apiParam {String{..255}} countryName Mandatory countryName
      * @apiParam {String{..255}} countryCode Mandatory countryCode

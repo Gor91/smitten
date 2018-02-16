@@ -41,4 +41,6 @@ class Constants
     const ERR_AGE_BIG = 'err.big';
 
     const ERR_OUT_OF_RANGE = 'err.out_of_range';
+
+    const ERR_IMAGE_BIG = 'err.image_too_large';
 }

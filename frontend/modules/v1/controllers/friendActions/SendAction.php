@@ -19,7 +19,7 @@ use yii\web\ServerErrorHttpException;
 class SendAction extends Action
 {
     /**
-     * @api {POST} /friends/{id} Send friend action
+     * @api {POST} /friends/{id} Send friend
      * @apiVersion 1.0.0
      * @apiName SendFriend
      * @apiGroup Friend
@@ -40,7 +40,7 @@ class SendAction extends Action
      *  }
      *
      * @param $id
-     * @return Friends|void
+     * @return Friends|null
      * @throws ForbiddenHttpException
      * @throws ServerErrorHttpException
      */
@@ -59,7 +59,7 @@ class SendAction extends Action
                 try {
                     if ($model->save()) {
                         Yii::$app->getResponse()->setStatusCode(202);
-                        return;
+                        return null;
                     }
                 } catch (\Exception $e) {
                     Yii::error($e->getMessage(), 'app');
@@ -68,6 +68,7 @@ class SendAction extends Action
                 if (!$model->hasErrors()) {
                     throw new ServerErrorHttpException();
                 }
+
                 return $model;
             }
         }
