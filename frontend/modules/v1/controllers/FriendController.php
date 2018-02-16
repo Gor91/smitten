@@ -35,18 +35,16 @@ class FriendController extends RestController
                 'authMethods' => [
                     HttpBearerAuth::className(),
                     QueryParamAuth::className()
-                ],
+                ]
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'send' => ['POST'],
                     'apply' => ['PUT'],
-                    'delete' => ['DELETE'],
-                    'index' => ['GET'],
                     'pending'=>['GET']
-                ],
-            ],
+                ]
+            ]
         ], parent::behaviors());
     }
 

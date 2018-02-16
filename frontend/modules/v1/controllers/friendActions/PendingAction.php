@@ -16,9 +16,9 @@ use yii\rest\Action;
 class PendingAction extends Action
 {
     /**
-     * @api {GET} /friends/pending friend request list
+     * @api {GET} /friends/pending Request list
      * @apiVersion 1.0.0
-     * @apiName GetList
+     * @apiName GetPending
      * @apiGroup Friend
      * @apiPermission UserAccess
      *

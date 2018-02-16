@@ -78,7 +78,17 @@ class ActivateAction extends Action
      *             "username": "jone",
      *             "gender": 1,
      *             "phone": "+37444646549",
-     *             "dob": "1989-02-02"
+     *             "age": 29,
+     *             "location": [
+     *                 {
+     *                    "countryName": "Armenia",
+     *                    "countryCode": "AM",
+     *                    "cityName": "Erevan",
+     *                    "cityCode": "erevan",
+     *                    "lat": 45.56,
+     *                    "lng": 42.159
+     *                 }
+     *             ]
      *          }
      *       }
      *    }

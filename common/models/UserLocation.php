@@ -64,7 +64,9 @@ class UserLocation extends BaseModel
             "countryName",
             "countryCode",
             "cityName",
-            "cityCode"
+            "cityCode",
+            "lat",
+            "lng"
         ];
     }
 

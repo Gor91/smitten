@@ -14,6 +14,12 @@
   "order": [
     "PostUser",
     "PostUserActivation",
-    "LoginUser"
+    "LoginUser",
+    "PostChangeProfile",
+    "SendFriend",
+    "GetPending",
+    "ApplyFriend",
+    "DeleteFriend",
+    "GetList"
   ]
 }

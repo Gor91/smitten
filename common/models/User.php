@@ -14,6 +14,7 @@ use Yii;
 use yii\web\IdentityInterface;
 use common\components\Filter;
 use common\models\DataAccess\UserQuery;
+use frontend\modules\v1\models\Friends;
 
 /**
  * User model
@@ -42,7 +43,10 @@ class User extends BaseModel implements IdentityInterface
     /** @var $SCENARIO_LOGIN */
     const SCENARIO_LOGIN = 'login';
 
-    /** @var $PATH_AVATARS */
+    /** @var $SCENARIO_CHANGE_PROFILE */
+    const SCENARIO_CHANGE_PROFILE = 'change_profile';
+
+    /** @var $PATH_AVA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ````TARS */
     const PATH_AVATARS = 'avatars';
 
     /**
@@ -60,7 +64,7 @@ class User extends BaseModel implements IdentityInterface
     {
         return [
             /* Filters */
-            [['fName', 'lName', 'username', 'bio', 'password'], 'filter', 'filter' => function ($value) {
+            [['fName', 'lName', 'username', 'bio', 'password','phone'], 'filter', 'filter' => function ($value) {
                 return Filter::cleanText($value);
             }],
             ['username', 'filter', 'filter' => function ($value) {
@@ -117,7 +121,7 @@ class User extends BaseModel implements IdentityInterface
 
         if ($this->avatar) {
             $fields['avatar'] = function () {
-                return Yii::getAlias(sprintf('%s/%s/%s/%s', Yii::$app->params['url.storage'], self::PATH_AVATARS, date('Y', strtotime($this->dob)), $this->avatar));
+                return Yii::getAlias(sprintf('%s/%s', Yii::$app->params['url.storage'], $this->avatar));
             };
         }
 
@@ -132,6 +136,22 @@ class User extends BaseModel implements IdentityInterface
     public static function find()
     {
         return new UserQuery(get_called_class());
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFromRequestFriend()
+    {
+        return $this->hasMany(Friends::className(), ['from' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getToRequestFriend()
+    {
+        return $this->hasMany(Friends::className(), ['to' => 'id']);
     }
 
     /**

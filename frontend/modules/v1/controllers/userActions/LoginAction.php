@@ -89,7 +89,7 @@ class LoginAction extends Action
      *                  "gender": 1,
      *                  "phone": "+37477646579",
      *                  "age": 29,
-     *                  "avatar": "http://smite.sixelitprojects.com/avatars/1989/jone.png",
+     *                  "avatar": "http://smite.sixelitprojects.com/avatars/2018/2/5a867ea9ecc98.png",
      *                  "location": [
      *                      {
      *                          "countryName": "Armenia",

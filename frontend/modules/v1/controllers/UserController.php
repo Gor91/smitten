@@ -42,7 +42,8 @@ class UserController extends RestController
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'activate' => ['POST'],
-                    'login' => ['POST']
+                    'login' => ['POST'],
+                    'change_profile'=>['POST']
                 ],
             ],
         ], parent::behaviors());
@@ -80,6 +81,11 @@ class UserController extends RestController
 
         $actions['login'] = [
             'class' => 'frontend\modules\v1\controllers\userActions\LoginAction',
+            'modelClass' => $this->modelClass
+        ];
+
+        $actions['change_profile'] = [
+            'class' => 'frontend\modules\v1\controllers\userActions\ChangeProfileAction',
             'modelClass' => $this->modelClass
         ];
 

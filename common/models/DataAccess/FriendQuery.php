@@ -56,12 +56,12 @@ class FriendQuery extends ActiveQuery
     public function friendList($userId)
     {
         $queryFrom = User::find();
-        $queryFrom->joinWith(['fromRequestUser'])
+        $queryFrom->joinWith(['fromRequestFriend'])
             ->where(['to' => $userId])
             ->andWhere(['friends.statusId' => FriendStatus::FRIEND]);
 
         $queryTo = User::find();
-        $queryTo->joinWith(['toRequestUser'])
+        $queryTo->joinWith(['toRequestFriend'])
             ->where(['from' => $userId])
             ->andWhere(['friends.statusId' => FriendStatus::FRIEND]);
 
@@ -84,7 +84,7 @@ class FriendQuery extends ActiveQuery
     public function checkPendingList($userId)
     {
         $queryTo = User::find();
-        $queryTo->joinWith(['fromRequestUser'])
+        $queryTo->joinWith(['fromRequestFriend'])
             ->where(['to' => $userId])
             ->andWhere(['friends.statusId' => FriendStatus::PENDING]);
 

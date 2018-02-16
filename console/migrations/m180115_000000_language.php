@@ -23,11 +23,10 @@ class m180115_000000_language extends Migration
 
         $this->insert('language', ['label' => 'English', 'key' => 'en', 'default' => 1]);
         $this->insert('language', ['label' => 'Russian', 'key' => 'ru']);
-        $this->insert('language', ['label' => 'Armenian', 'key' => 'am']);
         $this->insert('language', ['label' => 'French', 'key' => 'fr']);
         $this->insert('language', ['label' => 'German', 'key' => 'de']);
-        $this->insert('language', ['label' => 'Japanese', 'key' => 'jp']);
-        $this->insert('language', ['label' => 'Chinese', 'key' => 'ch']);
+        $this->insert('language', ['label' => 'Japanese', 'key' => 'ja']);
+        $this->insert('language', ['label' => 'Chinese', 'key' => 'zh-Hant']);
     }
 
     public function down()

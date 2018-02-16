@@ -17,7 +17,7 @@ class IndexAction extends Action
 {
 
     /**
-     * @api {GET} /friends get friend list
+     * @api {GET} /friends Friend list
      * @apiVersion 1.0.0
      * @apiName GetList
      * @apiGroup Friend
@@ -31,13 +31,26 @@ class IndexAction extends Action
      *         "data": {
      *             "result": [
      *                 {
-     *                     "id": "2",
-     *                     "fName": "John",
-     *                     "lName": "Lennon",
-     *                     "username": "LenJo",
-     *                     "gender": 2,
-     *                     "phone": "985265",
-     *                     "bio": "Some text"
+     *                   "id": "24",
+     *                   "fName": "Jone",
+     *                   "lName": "Smith",
+     *                   "username": "jone21",
+     *                   "gender": 1,
+     *                   "lang": "fr",
+     *                   "phone": "+37444746579",
+     *                   "bio": "I am looking for a life partner and someone who share the same interests as me",
+     *                   "age": 29,
+     *                   "avatar": "http://smite.sixelitprojects.com/avatars/2018/2/5a86e10455da0.jpg",
+     *                   "location": [
+     *                       {
+     *                           "countryName": "India",
+     *                           "countryCode": "IN",
+     *                           "cityName": "Mumbai",
+     *                           "cityCode": "mumbai",
+     *                           "lat": 19.1005,
+     *                           "lng": 73.0303
+     *                       }
+     *                   ]
      *                 }
      *             ],
      *             "_links": {
