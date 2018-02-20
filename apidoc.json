@@ -1,0 +1,25 @@
+{
+  "name": "SMITE",
+  "version": "1.0.0",
+  "title": "SMITE api documentation",
+  "description": "Smite is an online dating app for chatting, getting to know people and eventually going on dates. The users are matched based on their common interests which they get to pick after registration. The feature that sets Smite apart is that girls are the only ones who can send friend requests.",
+  "template": {
+    "withCompare": false,
+    "withGenerator": false
+  },
+  "footer": {
+    "title": "Author",
+    "filename": "FOOTER.md"
+  },
+  "order": [
+    "PostUser",
+    "PostUserActivation",
+    "LoginUser",
+    "PostChangeProfile",
+    "SendFriend",
+    "GetPending",
+    "ApplyFriend",
+    "DeleteFriend",
+    "GetList"
+  ]
+}

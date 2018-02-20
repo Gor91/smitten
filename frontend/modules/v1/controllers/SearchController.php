@@ -1,8 +1,8 @@
 <?php
 /**
- * UserController
+ * SearchController
  *
- * @apiDefine User User
+ * @apiDefine Search Search
  *
  * @package    frontend\modules\v1
  * @subpackage controllers
@@ -11,15 +11,16 @@
 
 namespace frontend\modules\v1\controllers;
 
-use frontend\controllers\RestController;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
+use frontend\controllers\RestController;
 use yii\filters\auth\QueryParamAuth;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 
-class UserController extends RestController
+class SearchController extends RestController
 {
+
     /**
      * Allows two types of authorization.
      *   1.Query param authorization
@@ -35,16 +36,10 @@ class UserController extends RestController
                 'authMethods' => [
                     HttpBearerAuth::className(),
                     QueryParamAuth::className()
-                ],
-                'except' => ['create', 'login']
+                ]
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
-                'actions' => [
-                    'activate' => ['POST'],
-                    'login' => ['POST'],
-                    'change_profile'=>['POST']
-                ],
             ],
         ], parent::behaviors());
     }
@@ -59,7 +54,7 @@ class UserController extends RestController
      */
     public $serializer = [
         'class' => 'frontend\components\RestSerializer',
-        'collectionEnvelope' => 'users'
+        'collectionEnvelope' => 'result'
     ];
 
     /**
@@ -69,23 +64,8 @@ class UserController extends RestController
     {
         $actions = [];
 
-        $actions['create'] = [
-            'class' => 'frontend\modules\v1\controllers\userActions\CreateAction',
-            'modelClass' => $this->modelClass
-        ];
-
-        $actions['activate'] = [
-            'class' => 'frontend\modules\v1\controllers\userActions\ActivateAction',
-            'modelClass' => $this->modelClass
-        ];
-
-        $actions['login'] = [
-            'class' => 'frontend\modules\v1\controllers\userActions\LoginAction',
-            'modelClass' => $this->modelClass
-        ];
-
-        $actions['change_profile'] = [
-            'class' => 'frontend\modules\v1\controllers\userActions\ChangeProfileAction',
+        $actions['index'] = [
+            'class' => 'frontend\modules\v1\controllers\searchActions\IndexAction',
             'modelClass' => $this->modelClass
         ];
 

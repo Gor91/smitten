@@ -1,10 +1,14 @@
 <?php
+/**
+ * User status table
+ *
+ * @package    common
+ * @subpackage models
+ * @author     SIXELIT <sixelit.com>
+ */
 
 use yii\db\Migration;
 
-/**
- * Class m180115_000001_user_status
- */
 class m180115_000001_user_status extends Migration
 {
     public function up()
@@ -14,9 +18,9 @@ class m180115_000001_user_status extends Migration
             'label' => $this->string(50)->notNull()
         ]);
 
-        $this->insert('user_status', ['label' => 'published']);
+        $this->insert('user_status', ['label' => 'pending']);
+        $this->insert('user_status', ['label' => 'active']);
         $this->insert('user_status', ['label' => 'blocked']);
-        $this->insert('user_status', ['label' => 'deleted']);
     }
 
     public function down()

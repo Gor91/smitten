@@ -1,8 +1,8 @@
 <?php
 /**
- * UserController
+ * FriendController
  *
- * @apiDefine User User
+ * @apiDefine Friend Friend
  *
  * @package    frontend\modules\v1
  * @subpackage controllers
@@ -18,7 +18,7 @@ use yii\filters\auth\QueryParamAuth;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 
-class UserController extends RestController
+class FriendController extends RestController
 {
     /**
      * Allows two types of authorization.
@@ -35,57 +35,58 @@ class UserController extends RestController
                 'authMethods' => [
                     HttpBearerAuth::className(),
                     QueryParamAuth::className()
-                ],
-                'except' => ['create', 'login']
+                ]
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'activate' => ['POST'],
-                    'login' => ['POST'],
-                    'change_profile'=>['POST']
-                ],
-            ],
+                    'send' => ['POST'],
+                    'apply' => ['PUT'],
+                    'pending'=>['GET']
+                ]
+            ]
         ], parent::behaviors());
     }
 
     /**
      * @var string the model class name. This property must be set.
      */
-    public $modelClass = 'frontend\modules\v1\models\User';
+    public $modelClass = 'frontend\modules\v1\models\Friends';
 
     /**
      * @var string|array the configuration for creating the serializer that formats the response data.
      */
     public $serializer = [
         'class' => 'frontend\components\RestSerializer',
-        'collectionEnvelope' => 'users'
+        'collectionEnvelope' => 'result'
     ];
 
-    /**
-     * @return array
-     */
     public function actions()
     {
         $actions = [];
 
-        $actions['create'] = [
-            'class' => 'frontend\modules\v1\controllers\userActions\CreateAction',
+        $actions['index'] = [
+            'class' => 'frontend\modules\v1\controllers\friendActions\IndexAction',
             'modelClass' => $this->modelClass
         ];
 
-        $actions['activate'] = [
-            'class' => 'frontend\modules\v1\controllers\userActions\ActivateAction',
+        $actions['send'] = [
+            'class' => 'frontend\modules\v1\controllers\friendActions\SendAction',
             'modelClass' => $this->modelClass
         ];
 
-        $actions['login'] = [
-            'class' => 'frontend\modules\v1\controllers\userActions\LoginAction',
+        $actions['apply'] = [
+            'class' => 'frontend\modules\v1\controllers\friendActions\ApplyAction',
             'modelClass' => $this->modelClass
         ];
 
-        $actions['change_profile'] = [
-            'class' => 'frontend\modules\v1\controllers\userActions\ChangeProfileAction',
+        $actions['delete'] = [
+            'class' => 'frontend\modules\v1\controllers\friendActions\DeleteAction',
+            'modelClass' => $this->modelClass
+        ];
+
+        $actions['pending'] = [
+            'class' => 'frontend\modules\v1\controllers\friendActions\PendingAction',
             'modelClass' => $this->modelClass
         ];
 

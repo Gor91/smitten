@@ -6,9 +6,7 @@
  */
 
 return [
-    [
-        'v1' => [
-            'class' => 'frontend\modules\v1\Module'
-        ]
+    'v1' => [
+        'class' => 'frontend\modules\v1\Module'
     ]
 ];

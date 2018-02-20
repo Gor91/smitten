@@ -1,23 +1,30 @@
 <?php
+/**
+ * User
+ *
+ * @package    common
+ * @subpackage models
+ * @author     SIXELIT <sixelit.com>
+ */
 
 namespace common\models;
 
+use DateTime;
 use Yii;
-use yii\base\NotSupportedException;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use common\components\Filter;
+use common\models\DataAccess\UserQuery;
+use frontend\modules\v1\models\Friends;
 
 /**
  * User model
  *
  * @property int $id
- * @property int $status_id
- * @property string $f_name
- * @property string $l_name
+ * @property int $statusId
+ * @property string $lang
+ * @property string $fName
+ * @property string $lName
  * @property string $username
- * @property string $email
  * @property string $password
  * @property int $gender
  * @property string $dob
@@ -28,14 +35,19 @@ use common\components\Filter;
  * @property int $created
  * @property int $updated
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends BaseModel implements IdentityInterface
 {
-    /** @var $STATUS_BLOCKED */
-    const STATUS_BLOCKED = 1;
-    /** @var $STATUS_ACTIVE */
-    const STATUS_ACTIVE = 2;
-    /** @var $STATUS_PENDING */
-    const STATUS_PENDING = 3;
+    /** @var $SCENARIO_CREATE */
+    const SCENARIO_CREATE = 'create';
+
+    /** @var $SCENARIO_LOGIN */
+    const SCENARIO_LOGIN = 'login';
+
+    /** @var $SCENARIO_CHANGE_PROFILE */
+    const SCENARIO_CHANGE_PROFILE = 'change_profile';
+
+    /** @var $PATH_AVA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ````TARS */
+    const PATH_AVATARS = 'avatars';
 
     /**
      * @return string
@@ -48,35 +60,20 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @return array
      */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className(),
-        ];
-    }
-
-    /**
-     * @return array
-     */
     public function rules()
     {
         return [
             /* Filters */
-            [['f_name', 'l_name', 'username', 'bio', 'email', 'password'], 'filter', 'filter' => function ($value) {
+            [['fName', 'lName', 'username', 'bio', 'password','phone'], 'filter', 'filter' => function ($value) {
                 return Filter::cleanText($value);
-            }],
-            [['username', 'email', 'password'], 'filter', 'filter' => function ($value) {
-                return Filter::cleanAllInnerSpaces($value);
             }],
             ['username', 'filter', 'filter' => function ($value) {
                 return Filter::removeAtFromNickname($value);
             }],
             /* Validation rules */
-            ['status_id', 'default', 'value' => self::STATUS_PENDING],
-            ['status_id', 'in', 'range' => [self::STATUS_BLOCKED, self::STATUS_PENDING]],
+            ['statusId', 'default', 'value' => UserStatus::PENDING],
+            ['statusId', 'in', 'range' => [UserStatus::PENDING, UserStatus::ACTIVE, UserStatus::BLOCKED]],
             [['avatar', 'bio'], 'default', 'value' => null],
-            ['password', 'string', 'min' => 6, 'max' => 20],
-            ['email', 'email'],
             [['dob'], 'date', 'format' => 'yyyy-mm-dd']
         ];
     }
@@ -88,11 +85,11 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'status_id' => Yii::t('app', 'Status Id'),
-            'f_name' => Yii::t('app', 'First Name'),
-            'l_name' => Yii::t('app', 'Last Name'),
+            'statusId' => Yii::t('app', 'Status Id'),
+            'lang' => Yii::t('app', 'Language Id'),
+            'fName' => Yii::t('app', 'First Name'),
+            'lName' => Yii::t('app', 'Last Name'),
             'username' => Yii::t('app', 'Username'),
-            'email' => Yii::t('app', 'Email'),
             'password' => Yii::t('app', 'Password'),
             'gender' => Yii::t('app', 'Gender'),
             'dob' => Yii::t('app', 'Day of bird'),
@@ -110,14 +107,77 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function fields()
     {
-        $fields = ['id', 'f_name', 'l_name', 'username', 'email', 'phone'];
+        $fields = ['id', 'fName', 'lName', 'username', 'gender', 'lang', 'phone'];
+
         if ($this->bio) {
             $fields[] = 'bio';
         }
+
         if ($this->dob) {
-            $fields[] = 'dob';
+            $fields['age'] = function () {
+                return self::calculateAge($this->dob);
+            };
         }
+
+        if ($this->avatar) {
+            $fields['avatar'] = function () {
+                return Yii::getAlias(sprintf('%s/%s', Yii::$app->params['url.storage'], $this->avatar));
+            };
+        }
+
+        $fields[] = 'location';
+
         return $fields;
+    }
+
+    /**
+     * @return UserQuery|\yii\db\ActiveQuery
+     */
+    public static function find()
+    {
+        return new UserQuery(get_called_class());
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFromRequestFriend()
+    {
+        return $this->hasMany(Friends::className(), ['from' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getToRequestFriend()
+    {
+        return $this->hasMany(Friends::className(), ['to' => 'id']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBirthDay()
+    {
+        return date('m-d') == date('m-d', strtotime($this->dob));
+    }
+
+    /**
+     * @param $dob
+     * @return int
+     */
+    public static function calculateAge($dob)
+    {
+        try {
+            $birthDate = new DateTime($dob);
+            $today = new DateTime('today');
+
+            return $birthDate->diff($today)->y;
+        } catch (\Exception $e) {
+            Yii::error($e, 'app');
+        }
+
+        return 0;
     }
 
     /**
@@ -126,18 +186,17 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id' => $id, 'statusId' => UserStatus::ACTIVE]);
     }
 
     /**
      * @param mixed $token
      * @param null $type
-     * @return void|IdentityInterface
-     * @throws NotSupportedException
+     * @return null|IdentityInterface|static
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::findOne(['token' => $token]);
     }
 
     /**
@@ -146,7 +205,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['username' => $username, 'statusId' => UserStatus::ACTIVE]);
     }
 
     /**
@@ -189,7 +248,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function setPassword($password)
     {
-        $this->password = Yii::$app->security->generatePasswordHash($password);
+        $this->password = Yii::$app->security->generatePasswordHash(md5($password));
     }
 
     /**

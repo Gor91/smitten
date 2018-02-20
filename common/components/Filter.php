@@ -4,10 +4,12 @@
  *
  * @package    common
  * @subpackage components
- * @author     DEVELANDOO <develandoo.com>
+ * @author     SIXELIT <sixelit.com>
  */
 
 namespace common\components;
+
+use yii\helpers\ArrayHelper;
 
 class Filter
 {
@@ -53,7 +55,7 @@ class Filter
      */
     public static function removeAtFromNickname($nickname)
     {
-        return ltrim($nickname, '@');
+        return ltrim($nickname,'@');
     }
 
     /**

@@ -1,38 +1,46 @@
 {
-    "name": "yiisoft/yii2-app-advanced",
-    "description": "Yii 2 Advanced Project Template",
-    "keywords": ["yii2", "framework", "advanced", "project template"],
-    "homepage": "http://www.yiiframework.com/",
+    "name": "smite-backend",
+    "version": "1.0.0",
+    "description": "Smite is an online dating app for chatting, getting to know people and eventually going on dates. The users are matched based on their common interests which they get to pick after registration. The feature that sets Smite apart is that girls are the only ones who can send friend requests.",
+    "keywords": [
+        "smite"
+    ],
     "type": "project",
     "license": "BSD-3-Clause",
-    "support": {
-        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
-        "forum": "http://www.yiiframework.com/forum/",
-        "wiki": "http://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/yiisoft/yii2"
-    },
     "minimum-stability": "stable",
+    "company": {
+        "name": "SIXELIT",
+        "email": "info@sixelit.com",
+        "homepage": "http://sixelit.com",
+        "role": "Company",
+        "developers": [
+            {
+                "name": "Arzin Nikolyan",
+                "email": "nikarzin90@gmail.com"
+            },
+            {
+                "name": "Gor Vardevanyan",
+                "email": "vardevanyangor@gmail.com"
+            }
+        ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://bitbucket.org/SixelITteam/backend_smitten"
+    },
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.6.0",
         "yiisoft/yii2": "~2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0"
+        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
+        "borales/yii2-phone-input": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
-        "yiisoft/yii2-faker": "~2.0.0",
-        "codeception/base": "^2.2.3",
-        "codeception/verify": "~0.3.1"
+        "yiisoft/yii2-faker": "~2.0.0"
     },
     "config": {
         "process-timeout": 1800
-    },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        }
-    ]
+    }
 }
