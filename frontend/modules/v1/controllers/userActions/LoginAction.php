@@ -111,6 +111,8 @@ class LoginAction extends Action
     {
         /** @var $model User */
         $model = new $this->modelClass;
+        $model->setScenario(User::SCENARIO_LOGIN);
+
         $model->phone = Yii::$app->request->getBodyParam('phone');
         $model->username = Yii::$app->request->getBodyParam('username');
         $model->password = Yii::$app->request->getBodyParam('password');
